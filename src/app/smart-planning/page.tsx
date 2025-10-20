@@ -83,7 +83,7 @@ const budgetConfigs = {
     lunchVenues: ['Flower Drum', 'Vue de Monde', 'Attica', 'Brae (Birregurra)', 'Lake House (Daylesford)', 'Minamishima', 'Ishizuka', 'Amaru', 'O.My', 'IDES'],
     dinnerVenues: ['Gimlet at Cavendish House', 'Society', 'Reine & La Rue', 'Grill Americano', 'Warabi', 'Her Bar', 'March', 'Di Stasio Città', 'France-Soir', 'Grossi Florentino'],
     snackBreaks: ['Om Nom Kitchen', 'Hopetoun Tea Rooms', 'The Windsor High Tea', 'Yugen Tea Bar', 'Byrdi', 'Above Board', 'Caretaker\'s Cottage', 'Siglo Bar', 'Gerald\'s Bar', 'Bar Margaux'],
-    transport: ['Chauffeur Service (e.g., Blacklane)', 'Helicopter Transfer', 'Luxury Car Rental (e.g., Porsche, Ferrari)', 'Private Yacht Charter', 'V/Line First Class'],
+    transport: ['Chauffeur Service (e.g., Blacklane)', 'Helicopter Transfer', 'Luxury Car Rental', 'Private Yacht Charter', 'V/Line First Class'],
     extraActivities: ['Private Helicopter Tour over Melbourne', 'Hot Air Ballooning over Yarra Valley', 'Private Shopping Tour with a Stylist', 'Exclusive Backstage Theatre Tour', 'Hands-on Cooking Class with a Celebrity Chef', 'Private Art Gallery Viewing', 'Luxury Spa Day at Crown Spa', 'AFL Corporate Box Experience', 'Melbourne Cup Carnival (Spring)', 'Australian Open Finals Tickets'],
     accommodationStyle: ['Park Hyatt Melbourne', 'Crown Towers Melbourne', 'The Ritz-Carlton, Melbourne', 'W Melbourne', 'Jackalope Hotel (Mornington Peninsula)'][Math.floor(Math.random() * 5)]
   }
@@ -1050,7 +1050,7 @@ export default function QuickPlanningPage() {
           });
         }
       }, 100);
-    }, 3000);
+    }, 400);
   };
 
   const calculateDuration = (start: string, end: string) => {
@@ -1671,9 +1671,6 @@ export default function QuickPlanningPage() {
     <div className="bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl border border-white/60 p-8">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
-          <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
           Your Personalized Trip Plan
         </h2>
         <button 
@@ -1812,9 +1809,6 @@ export default function QuickPlanningPage() {
                         : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50/80'
                     }`}
                   >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                    </svg>
                     Quick Planning
                   </button>
                   <button
@@ -1825,9 +1819,6 @@ export default function QuickPlanningPage() {
                         : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50/80'
                     }`}
                   >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                    </svg>
                     Custom Planning
                   </button>
                 </div>
@@ -1862,7 +1853,7 @@ export default function QuickPlanningPage() {
                 <button
                   onClick={generateQuickPlan}
                   disabled={!getCompletionStatus().allComplete || isGenerating}
-                  className={`px-12 py-4 rounded-2xl font-bold text-xl transition-all duration-300 ${
+                  className={`px-16 py-6 rounded-2xl font-bold text-xl transition-all duration-300 ${
                     !getCompletionStatus().allComplete || isGenerating
                       ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
                       : 'bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white shadow-xl hover:shadow-2xl transform hover:scale-105 shadow-orange-500/25'
@@ -1870,15 +1861,12 @@ export default function QuickPlanningPage() {
                 >
                   {isGenerating ? (
                     <div className="flex items-center gap-3">
-                      <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
-                      Generating Your Plan...
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                      <span className="text-xl font-bold">Generating...</span>
                     </div>
                   ) : (
                     <div className="flex items-center gap-3">
-                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                      </svg>
-                      Generate Quick Itinerary
+                      <span className="text-xl font-bold">Generate</span>
                     </div>
                   )}
                 </button>
@@ -1899,10 +1887,7 @@ export default function QuickPlanningPage() {
                           href="/trip-planner"
                           className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-200 flex items-center gap-2 shadow-lg hover:shadow-xl shadow-orange-500/25"
                         >
-                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                          </svg>
-                          Complete Trip Details
+                          Complete Details
                         </Link>
                       )}
                       {!getCompletionStatus().attractionsSelected && (
@@ -1910,9 +1895,6 @@ export default function QuickPlanningPage() {
                           href="/guidebook"
                           className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-200 flex items-center gap-2 shadow-lg hover:shadow-xl shadow-orange-500/25"
                         >
-                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                          </svg>
                           Browse Attractions
                         </Link>
                       )}
@@ -1939,17 +1921,14 @@ export default function QuickPlanningPage() {
                   <button
                     onClick={initializeCustomPlan}
                     disabled={!getCompletionStatus().allComplete}
-                    className={`px-12 py-4 rounded-2xl font-bold text-xl transition-all duration-300 ${
+                    className={`px-16 py-6 rounded-2xl font-bold text-xl transition-all duration-300 ${
                       !getCompletionStatus().allComplete
                         ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
                         : 'bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white shadow-xl hover:shadow-2xl transform hover:scale-105 shadow-orange-500/25'
                     }`}
                   >
                     <div className="flex items-center gap-3">
-                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8h16M4 16h16M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                      </svg>
-                      Start Custom Planning
+                      <span className="text-xl font-bold">Custom</span>
                     </div>
                   </button>
                   
@@ -1966,10 +1945,6 @@ export default function QuickPlanningPage() {
               <div id="custom-plan-section" className="bg-white/95 backdrop-blur-xl rounded-3xl shadow-xl border border-white/60 p-8">
                 <div className="flex items-center justify-between mb-8">
                   <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
-                    <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8h16M4 16h16M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                    </svg>
                     Your Custom Trip Plan
                   </h2>
                   <button 

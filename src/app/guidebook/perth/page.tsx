@@ -474,7 +474,7 @@ export default function PerthGuidebookPage() {
             {/* Quick Planning Button */}
             <Link href="/smart-planning">
               <button
-                className={`px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-300 flex items-center gap-2 ${
+                className={`px-8 py-4 rounded-2xl font-semibold text-base transition-all duration-300 flex items-center gap-2 ${
                   favorites.length > 0
                     ? 'bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105'
                     : 'bg-gray-200 text-gray-500 cursor-not-allowed'
@@ -482,10 +482,7 @@ export default function PerthGuidebookPage() {
                 disabled={favorites.length === 0}
                 title={favorites.length === 0 ? 'Please select some attractions first' : 'Create your personalized trip plan'}
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-                {favorites.length > 0 ? 'Create My Trip Plan' : 'Start Planning'}
+                Plan
               </button>
             </Link>
           </div>

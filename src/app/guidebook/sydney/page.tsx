@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -41,7 +41,7 @@ const supportedCities = [
   { name: 'Perth', path: 'perth', country: 'Australia' },
 ];
 
-export default function SydneyGuidebookPage() {
+function SydneyGuidebookContent() {
   const { user, isAuthenticated, logout } = useAuth();
   const { info } = useToastContext();
   const router = useRouter();
@@ -775,5 +775,17 @@ export default function SydneyGuidebookPage() {
         </div>
       </footer>
     </div>
+  );
+}
+
+export default function SydneyGuidebookPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black flex items-center justify-center">
+        <div className="w-16 h-16 border-4 border-orange-500/20 border-t-orange-500 rounded-full animate-spin"></div>
+      </div>
+    }>
+      <SydneyGuidebookContent />
+    </Suspense>
   );
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -138,7 +138,7 @@ const getTimeSlots = (hasElderly: boolean, budgetType: string) => {
   return baseSlots;
 };
 
-export default function QuickPlanningPage() {
+function QuickPlanningContent() {
   const { user, isAuthenticated, logout } = useAuth();
   const { info, error } = useToastContext();
   const router = useRouter();
@@ -2261,5 +2261,17 @@ export default function QuickPlanningPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function QuickPlanningPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black flex items-center justify-center">
+        <div className="w-16 h-16 border-4 border-orange-500/20 border-t-orange-500 rounded-full animate-spin"></div>
+      </div>
+    }>
+      <QuickPlanningContent />
+    </Suspense>
   );
 }

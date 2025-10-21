@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -14,7 +14,7 @@ const supportedCities = [
   { name: 'Perth', path: 'perth', country: 'Australia' },
 ];
 
-export default function GuidebookSearchPage() {
+function GuidebookSearchContent() {
   const { user, isAuthenticated, logout } = useAuth();
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
@@ -249,5 +249,17 @@ export default function GuidebookSearchPage() {
         </div>
       </footer>
     </div>
+  );
+}
+
+export default function GuidebookSearchPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black flex items-center justify-center">
+        <div className="w-16 h-16 border-4 border-orange-500/20 border-t-orange-500 rounded-full animate-spin"></div>
+      </div>
+    }>
+      <GuidebookSearchContent />
+    </Suspense>
   );
 }

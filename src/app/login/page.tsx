@@ -1,13 +1,13 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useAuth } from '@/contexts/AuthContext'
 import { useToastContext } from '@/contexts/ToastContext'
 
-export default function LoginPage() {
+function LoginForm() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -17,15 +17,13 @@ export default function LoginPage() {
   const { login, isLoading, isAuthenticated } = useAuth()
   const { success, error: showError } = useToastContext()
   const router = useRouter()
-  const searchParams = useSearchParams()
 
   // Redirect if already authenticated
   useEffect(() => {
     if (isAuthenticated) {
-      const returnUrl = searchParams.get('returnUrl') || '/'
-      router.push(returnUrl)
+      router.push('/')
     }
-  }, [isAuthenticated, router, searchParams])
+  }, [isAuthenticated, router])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -44,12 +42,15 @@ export default function LoginPage() {
     const loginResult = await login(email, password, rememberMe)
     
     if (loginResult.success) {
-      success('Welcome back!', 'You have successfully logged in.')
-      const returnUrl = searchParams.get('returnUrl') || '/'
-      router.push(returnUrl)
+      // Get the user data to show personalized welcome message
+      const userData = localStorage.getItem('user_data') || sessionStorage.getItem('user_data')
+      const userName = userData ? JSON.parse(userData).name : 'User'
+      success(`Welcome back, ${userName}!`, 'You have successfully logged in.')
+      router.push('/')
     } else {
-      setError(loginResult.error || 'Login failed. Please try again.')
-      showError('Login failed', loginResult.error || 'Something went wrong. Please try again.')
+      const errorMessage = loginResult.error || 'Login failed. Please try again.'
+      setError(errorMessage)
+      showError('Login failed', errorMessage)
     }
   }
 
@@ -77,14 +78,15 @@ export default function LoginPage() {
 
       {/* Logo in top right */}
       <div className="absolute top-8 right-8 flex items-center gap-3 z-10">
-        <Image
-          src="/Logo.png"
-          alt="GoPlanner Logo"
-          width={150}
-          height={50}
-          className="object-contain brightness-125 contrast-125 drop-shadow-lg"
-          style={{ filter: 'brightness(1.5) contrast(1.4) saturate(1.3) hue-rotate(-10deg)' }}
-        />
+        <div className="w-12 h-12 bg-gradient-to-br from-orange-400 via-orange-500 to-orange-600 rounded-2xl flex items-center justify-center shadow-xl ring-2 ring-orange-400/20">
+          <div className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center backdrop-blur-sm">
+            <span className="text-white font-black text-xs tracking-wider">Go</span>
+          </div>
+        </div>
+        <div className="flex flex-col">
+          <span className="text-xl font-black tracking-tight bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">GoPlanner</span>
+          <span className="text-xs text-orange-400 font-medium tracking-widest uppercase">Travel Smart</span>
+        </div>
       </div>
 
       {/* Main login card */}
@@ -281,5 +283,17 @@ export default function LoginPage() {
         </p>
       </div>
     </div>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black flex items-center justify-center">
+        <div className="w-16 h-16 border-4 border-orange-500/20 border-t-orange-500 rounded-full animate-spin"></div>
+      </div>
+    }>
+      <LoginForm />
+    </Suspense>
   )
 }

@@ -1,13 +1,12 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import Image from 'next/image'
+import { useState, useEffect, Suspense } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/contexts/AuthContext'
 import { useToastContext } from '@/contexts/ToastContext'
 
-export default function SignupPage() {
+function SignupForm() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -22,6 +21,38 @@ export default function SignupPage() {
   const { signup, isLoading, isAuthenticated } = useAuth()
   const { success } = useToastContext()
   const router = useRouter()
+
+  // Load saved form data only if returning from Terms/Privacy pages
+  useEffect(() => {
+    const returnedFromTerms = sessionStorage.getItem('returned_from_terms')
+    
+    if (returnedFromTerms === 'true') {
+      const savedFormData = localStorage.getItem('signup_form_data')
+      const savedAcceptTerms = localStorage.getItem('signup_accept_terms')
+      
+      if (savedFormData) {
+        try {
+          const parsedData = JSON.parse(savedFormData)
+          setFormData(parsedData)
+        } catch (error) {
+          console.error('Failed to parse saved form data:', error)
+        }
+      }
+      
+      if (savedAcceptTerms) {
+        setAcceptTerms(savedAcceptTerms === 'true')
+      }
+      
+      // Clear the flag after restoring data
+      sessionStorage.removeItem('returned_from_terms')
+    }
+    
+    // Always clear saved data when component mounts (except when returning from Terms/Privacy)
+    if (returnedFromTerms !== 'true') {
+      localStorage.removeItem('signup_form_data')
+      localStorage.removeItem('signup_accept_terms')
+    }
+  }, [])
 
   // Redirect if already authenticated
   useEffect(() => {
@@ -38,6 +69,12 @@ export default function SignupPage() {
     }))
   }
 
+  // Save form data when navigating to Terms/Privacy pages
+  const handleTermsNavigation = () => {
+    localStorage.setItem('signup_form_data', JSON.stringify(formData))
+    localStorage.setItem('signup_accept_terms', acceptTerms.toString())
+    sessionStorage.setItem('returned_from_terms', 'true')
+  }
 
   const validateForm = () => {
     if (!formData.name.trim()) {
@@ -78,15 +115,21 @@ export default function SignupPage() {
     }
     
     try {
-      const signupResult = await signup(formData.email, formData.password, formData.name)
-      if (signupResult.success) {
+      const signupSuccess = await signup(formData.email, formData.password, formData.name)
+      if (signupSuccess) {
+        // Clear saved form data after successful signup
+        localStorage.removeItem('signup_form_data')
+        localStorage.removeItem('signup_accept_terms')
+        
         success(`Welcome to GoPlanner, ${formData.name}!`, 'Your account has been created successfully.')
         router.push('/')
-      } else {
-        setError(signupResult.error || 'Signup failed. Please try again.')
       }
     } catch (error: any) {
-      setError('Signup failed. Please try again.')
+      if (error.message === 'User already exists') {
+        setError('This email is already registered. Please use a different email or sign in instead.')
+      } else {
+        setError('Registration failed. Please try again.')
+      }
     }
   }
 
@@ -114,14 +157,15 @@ export default function SignupPage() {
 
       {/* Logo in top right */}
       <div className="absolute top-8 right-8 flex items-center gap-3 z-10">
-        <Image
-          src="/Logo.png"
-          alt="GoPlanner Logo"
-          width={150}
-          height={50}
-          className="object-contain brightness-125 contrast-125 drop-shadow-lg"
-          style={{ filter: 'brightness(1.5) contrast(1.4) saturate(1.3) hue-rotate(-10deg)' }}
-        />
+        <div className="w-12 h-12 bg-gradient-to-br from-orange-400 via-orange-500 to-orange-600 rounded-2xl flex items-center justify-center shadow-xl ring-2 ring-orange-400/20">
+          <div className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center backdrop-blur-sm">
+            <span className="text-white font-black text-xs tracking-wider">Go</span>
+          </div>
+        </div>
+        <div className="flex flex-col">
+          <span className="text-xl font-black tracking-tight bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">GoPlanner</span>
+          <span className="text-xs text-orange-400 font-medium tracking-widest uppercase">Travel Smart</span>
+        </div>
       </div>
 
       {/* Main signup card */}
@@ -296,6 +340,7 @@ export default function SignupPage() {
                   <Link 
                     href="/terms" 
                     className="text-orange-400 hover:text-orange-300 underline"
+                    onClick={handleTermsNavigation}
                   >
                     Terms of Service
                   </Link>
@@ -303,6 +348,7 @@ export default function SignupPage() {
                   <Link 
                     href="/privacy" 
                     className="text-orange-400 hover:text-orange-300 underline"
+                    onClick={handleTermsNavigation}
                   >
                     Privacy Policy
                   </Link>
@@ -385,5 +431,17 @@ export default function SignupPage() {
         </p>
       </div>
     </div>
+  )
+}
+
+export default function SignupPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black flex items-center justify-center">
+        <div className="w-16 h-16 border-4 border-orange-500/20 border-t-orange-500 rounded-full animate-spin"></div>
+      </div>
+    }>
+      <SignupForm />
+    </Suspense>
   )
 }

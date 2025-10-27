@@ -17,6 +17,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "GoPlanner - Your Travel Companion",
   description: "Plan your perfect Australian adventure with GoPlanner.",
+  icons: {
+    icon: { url: '/favicon.svg', type: 'image/svg+xml' },
+  },
 };
 
 export default function RootLayout({

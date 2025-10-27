@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <!-- 深海蓝到青绿渐变 - 高级旅行感 -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f4c81"/>
+      <stop offset="100%" style="stop-color:#1e88a8"/>
+    </linearGradient>
+    
+    <!-- 飞机机身渐变 - 白色到淡青色 -->
+    <linearGradient id="planeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff"/>
+      <stop offset="100%" style="stop-color:#e0f7ff"/>
+    </linearGradient>
+    
+    <!-- 轨迹线条渐变 -->
+    <linearGradient id="trailGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#4fd1c5;stop-opacity:0"/>
+      <stop offset="100%" style="stop-color:#81e6d9"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- 背景 -->
+  <rect width="128" height="128" rx="24" fill="url(#bgGrad)"/>
+  
+  <!-- 创新飞机设计 - 现代流线型 -->
+  <g transform="translate(64, 64)">
+    <!-- 飞行轨迹 - 增加动感 -->
+    <path d="M -42,-28 Q -30,-26 -18,-24" 
+          stroke="url(#trailGrad)" 
+          stroke-width="3" 
+          fill="none" 
+          stroke-linecap="round"
+          opacity="0.6"/>
+    <path d="M -42,-18 Q -30,-18 -18,-18" 
+          stroke="url(#trailGrad)" 
+          stroke-width="2" 
+          fill="none" 
+          stroke-linecap="round"
+          opacity="0.4"/>
+    
+    <!-- 流线型机身 - 现代设计 -->
+    <path d="M 0,-42 L -8,-8 L -28,-8 L -28,2 L -8,2 L -8,20 L -16,24 L -16,30 L 0,26 L 16,30 L 16,24 L 8,20 L 8,2 L 28,2 L 28,-8 L 8,-8 Z" 
+          fill="url(#planeGrad)" 
+          stroke="white" 
+          stroke-width="2.5"
+          stroke-linejoin="round"
+          stroke-linecap="round"/>
+    
+    <!-- 机身窗户 - 增加细节 -->
+    <circle cx="0" cy="-15" r="2.5" fill="#0f4c81" opacity="0.3"/>
+    <circle cx="0" cy="-8" r="2.5" fill="#0f4c81" opacity="0.3"/>
+    <circle cx="0" cy="-1" r="2.5" fill="#0f4c81" opacity="0.3"/>
+    
+    <!-- 驾驶舱高光 -->
+    <ellipse cx="0" cy="-30" rx="5" ry="6" fill="white" opacity="0.4"/>
+    
+    <!-- 机翼高光 - 3D效果 -->
+    <path d="M -22,-5 L -12,-3 L -12,0 L -22,-2 Z" fill="white" opacity="0.2"/>
+    <path d="M 22,-5 L 12,-3 L 12,0 L 22,-2 Z" fill="white" opacity="0.2"/>
+    
+    <!-- 引擎光效 -->
+    <circle cx="0" cy="26" r="3" fill="#4fd1c5" opacity="0.6">
+      <animate attributeName="opacity" values="0.6;0.9;0.6" dur="1.5s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+  
+  <!-- 装饰性云朵元素 - 可选 -->
+  <ellipse cx="100" cy="28" rx="12" ry="6" fill="white" opacity="0.15"/>
+  <ellipse cx="25" cy="100" rx="10" ry="5" fill="white" opacity="0.1"/>
+</svg>
